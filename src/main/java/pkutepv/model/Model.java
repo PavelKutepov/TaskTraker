@@ -1,7 +1,6 @@
 package pkutepv.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 
 /**
@@ -9,7 +8,6 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 public abstract class Model  {
-
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="id")

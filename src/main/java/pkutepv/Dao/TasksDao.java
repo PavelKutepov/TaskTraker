@@ -7,7 +7,6 @@ import org.hibernate.query.Query;
 import pkutepv.model.Task;
 import pkutepv.model.User;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,14 @@ public class TasksDao implements Dao{
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+    /**
+     * Coхранение в базу данных
+     * @param name
+     * @param password
+     * @param description
+     * @param status
+     */
     @Override
     public void save(String name, String password, String description, String status) {
         Session session = this.sessionFactory.openSession();
@@ -38,6 +45,13 @@ public class TasksDao implements Dao{
         session.close();
     }
 
+    /**
+     * Получение списка задач из бд
+     * @param name
+     * @param password
+     * @param status
+     * @return список задач
+     */
     @Override
     public List<Task> getTaskList(String name,String password, String status) {
         Session session = this.sessionFactory.openSession();
@@ -48,7 +62,6 @@ public class TasksDao implements Dao{
             query.setParameter("p", password);
             query.setParameter("s", status);
             List<Object[]> taskList = query.list();
-
             for (Object[] task : taskList) {
                 ts.add((Task) task[0]);
             }
@@ -59,7 +72,12 @@ public class TasksDao implements Dao{
         return ts;
         }
 
-
+    /**
+     * Удаление задачи из бд
+     * @param name
+     * @param password
+     * @param id
+     */
     @Override
     public void delete(String name, String password, Long id) {
         Session session = this.sessionFactory.openSession();

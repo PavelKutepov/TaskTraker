@@ -19,6 +19,13 @@ public class ApplicationController {
     @Inject
     private Dao dao;
 
+    /**
+     * Получение списка задач
+     * @param name
+     * @param password
+     * @param status
+     * @return список задач
+     */
     @RequestMapping(value = "task/list/by/{name}/{password}/{status}",method = RequestMethod.GET)
     public @ResponseBody List<Task> getTask(@PathVariable String name, @PathVariable String password, @PathVariable String status) {
 
@@ -26,6 +33,14 @@ public class ApplicationController {
 
     }
 
+    /**
+     * Сохрение задачи в базу данных и вывод копии сохраненной задачи
+     * @param name
+     * @param password
+     * @param description
+     * @param status
+     * @return копия сохраненных значений
+     */
     @RequestMapping(value = "add/task",method = RequestMethod.POST )
 
     public @ResponseBody Map addTask(
@@ -42,6 +57,13 @@ public class ApplicationController {
         map.put("status", status);
         return map;
     }
+
+    /**
+     * Удаление задачи
+     * @param name
+     * @param password
+     * @param id
+     */
     @RequestMapping(value = "delete/task/by/{name}/{password}/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteTask(@PathVariable String name, @PathVariable String password, @PathVariable Long id){
