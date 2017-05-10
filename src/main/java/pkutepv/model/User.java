@@ -1,19 +1,26 @@
 package pkutepv.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
-import javax.persistence.*;
 
 
 
 
 @Entity
 @Table(name="user")
+
 public class User extends Model {
     @Column(name="name")
     private String name;
     @Column(name="password")
     private String password;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
     public User(){super();}

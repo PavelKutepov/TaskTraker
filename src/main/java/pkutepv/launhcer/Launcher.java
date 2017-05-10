@@ -1,14 +1,12 @@
 package pkutepv.launhcer;
 
-import java.net.URL;
-import java.security.ProtectionDomain;
-import java.util.List;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import pkutepv.Dao.Dao;
-import pkutepv.model.Task;
+
+import java.net.URL;
+import java.security.ProtectionDomain;
 
 /**
  * Starts jetty-server on the specified port

@@ -1,5 +1,7 @@
 package pkutepv.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="tasks")
+@JsonIgnoreProperties({"user"})
 public class Task extends Model{
     @Column(name="status")
     private String status;
@@ -58,7 +61,7 @@ public class Task extends Model{
     public String toString() {
         return "Tasks{" +
                 "status='" + status + '\'' +
-                ", description='" + description + '\'' +getId()+
+                ", description='" + description + '\'' +
                 '}';
     }
 }

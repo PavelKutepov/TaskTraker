@@ -3,11 +3,13 @@ package pkutepv.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 /**
  * Created by pkute on 07.05.2017.
  */
 @MappedSuperclass
-public abstract class Model {
+public abstract class Model  {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="id")
