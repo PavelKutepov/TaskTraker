@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Entity
 @Table(name="tasks")
 public class Task extends Model{
+    @Column(name="status")
     private String status;
+    @Column(name="description")
     private String description;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -56,7 +58,7 @@ public class Task extends Model{
     public String toString() {
         return "Tasks{" +
                 "status='" + status + '\'' +
-                ", description='" + description + '\'' +
+                ", description='" + description + '\'' +getId()+
                 '}';
     }
 }

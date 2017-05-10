@@ -3,14 +3,17 @@ package pkutepv.Dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import pkutepv.model.Task;
 import pkutepv.model.User;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pkute on 09.05.2017.
- */
+
+
+
 public class TasksDao implements Dao{
     private SessionFactory sessionFactory;
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -18,31 +21,63 @@ public class TasksDao implements Dao{
     }
     @Override
     public void save(String name, String password, String description, String status) {
-
         Session session = this.sessionFactory.openSession();
-        Object o = session.createQuery(" FROM User as u Where u.name=" + name + "AND u.password =" + password).uniqueResult();
-        if (o == null) {System.out.print("Invalid username or password");
-        } else {
-            User user = (User) o;
-            Task task = new Task(status, description, user);
+        try {
+            Query query = session.createQuery(" FROM User WHERE name=:n AND password=:p");
+            query.setParameter("n", name);
+            query.setParameter("p", password);
+            List<User> us = query.list();
+            Task task = new Task(status, description, us.get(0));
             Transaction tx = session.beginTransaction();
             session.persist(task);
             tx.commit();
-            session.close();
         }
+        catch (java.lang.IndexOutOfBoundsException n)
+        {System.out.println("Incorrect data");}
+        session.close();
+        session.close();
     }
 
     @Override
     public List<Task> getTaskList(String name,String password, String status) {
         Session session = this.sessionFactory.openSession();
-        List<Task> userList = session.createQuery("FROM Task as t inner join fetch User as u WITH u.name="+name+" AND u.password="+password+" AND t.status"=status).list();
-        session.close();
-        return userList;
+        List<Task> ts = new ArrayList<>();
+        try {
+            Query query = session.createQuery(" FROM Task as t INNER JOIN t.user as u WITH  u.name=:n AND u.password=:p AND t.status=:s ");
+            query.setParameter("n", name);
+            query.setParameter("p", password);
+            query.setParameter("s", status);
+            List<Object[]> taskList = query.list();
 
-    }
+            for (Object[] task : taskList) {
+                ts.add((Task) task[0]);
+            }
+            session.close();
+        }catch (java.lang.IndexOutOfBoundsException n)
+            {System.out.println("Incorrect data");}
+            session.close();
+        return ts;
+        }
+
 
     @Override
     public void delete(String name, String password, Long id) {
+        Session session = this.sessionFactory.openSession();
+        try {
+            Query query = session.createQuery(" FROM Task as t INNER JOIN t.user as u WITH u.name=:n AND u.password=:p AND t.id=:i");
+            query.setParameter("n", name);
+            query.setParameter("p", password);
+            query.setParameter("i", id);
+            List<Object[]> taskList = query.list();
+            Task task = (Task) taskList.get(0)[0];
+            Transaction tx = session.beginTransaction();
+            session.delete(task);
+            tx.commit();
+        }
+        catch (java.lang.IndexOutOfBoundsException n)
+        {System.out.print("Incorrect data");}
+        session.close();
+        }
 
     }
-}
+
